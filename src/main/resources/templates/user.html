@@ -4,8 +4,21 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
+<h1>Информация об аккаунте</h1>
 
+<p><strong>Id:</strong> [[${user.id}]]</p>
+<p><strong>Имя пользователя:</strong> [[${user.username}]]</p>
+<p><strong>Пароль:</strong> [[${user.password}]]</p>
+<p><strong>Enabled:</strong> [[${user.enabled}]]</p>
+<p><strong>Возраст:</strong> [[${user.age}]]</p>
+
+<br><br>
+<a href="/logout">Выйти из аккаунта</a>
+<br><br>
+
+<div th:if="${user.username == 'admin'}">
+    <a href="/admin">Вернуться к главной странице</a>
+</div>
 
 </body>
 </html>

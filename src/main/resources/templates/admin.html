@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+</head>
+<body>
+<h1>Список пользователей</h1>
+<a th:href="@{/add}">Добавить нового пользователя</a>
+<br><br>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Пароль</th>
+        <th>Статус аккаунта</th>
+        <th>Возраст</th>
+        <th>Действия</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.password}"></td>
+        <td th:text="${user.enabled}"></td>
+        <td th:text="${user.age}"></td>
+        <td>
+            <a th:href="@{/edit(id=${user.id})}">Редактировать</a>
+            <form th:action="@{/delete}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}">
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br><br>
+
+<a th:href="@{/user}">Информация об аккаунте</a>
+
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">-->
+<!--<head>-->
+<!--    <title>Spring Security Example</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Admin, welcome spring boot security page!</h1>-->
+
+
+<!--</body>-->
+<!--</html>-->
