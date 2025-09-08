@@ -7,20 +7,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.boot_security.demo.entities.User;
-import ru.kata.spring.boot_security.demo.repositories.UserRepository;
-import ru.kata.spring.boot_security.demo.services.UserDetailsServiceImpl;
-//import ru.kata.spring.boot_security.demo.services.UserService;
+import ru.kata.spring.boot_security.demo.services.user.UserService;
 
 @Controller
 public class AdminController {
-    private final UserRepository userRepository;
-    public AdminController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final UserService userService;
+
+    public AdminController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/admin")
     public String showUsers(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.findAllUsers());
         return "admin";
     }
 
@@ -32,16 +31,13 @@ public class AdminController {
 
     @PostMapping("/add")
     public String addUser(@ModelAttribute("user") User user) {
-        String rowPassword = user.getPassword();
-        String encodedPassword = "{noop}" + rowPassword;
-        user.setPassword(encodedPassword);
-        userRepository.save(user);
+        userService.saveUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model) {
-        User user = userRepository.findById(id).orElse(new User());
+        User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "edit-user";
     }
@@ -49,13 +45,13 @@ public class AdminController {
     @PostMapping("/update")
     public String updateUser(@RequestParam("id") Long id, @ModelAttribute User user) {
         user.setId(id);
-        userRepository.save(user);
+        userService.updateUser(user);
         return "redirect:/admin";
     }
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
-       userRepository.deleteById(id);
+        userService.deleteUserById(id);
         return "redirect:/admin";
     }
 }
