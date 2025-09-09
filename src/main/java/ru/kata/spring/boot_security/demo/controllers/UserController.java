@@ -4,22 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.kata.spring.boot_security.demo.entities.User;
-import ru.kata.spring.boot_security.demo.repositories.UserRepository;
+import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.security.Principal;
 
 @Controller
 public class UserController {
-
-    private final UserRepository userRepository;
-
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/user")
-    public String user(Principal principal, Model model) {
-        User user = userRepository.findByUsername(principal.getName());
+    public String showUserInfo(Principal principal, Model model) {
+        User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", user);
         return "user";
     }
